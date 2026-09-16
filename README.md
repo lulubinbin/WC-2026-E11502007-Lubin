@@ -2,10 +2,13 @@
 ###### tags: `Wireless Communications`
 
 ## :notebook_with_decorative_cover: Personal Information
-- Name:謝秉祐(HSIEH,PING YU)
-- number:M11502203
-- Research Direction: integrated sensing and communication
+- Name: Lubin Ouisse  
+- number: E11502007  
+- Research Direction: Information systems for air transport
+- School of origin : Ecole Nationale de l'Aviation Civile (ENAC)  
 - Briefly summarize your background and why you want to take this course:
+  
+I chose this course as it allows me to dive deeper into networks. While I had already attended network classes in my school of origin, this class and the multimedia wireless networks class goes further on the wireless aspects which is relevant in aviation.
 
 ## :notebook_with_decorative_cover: Assignment
 
