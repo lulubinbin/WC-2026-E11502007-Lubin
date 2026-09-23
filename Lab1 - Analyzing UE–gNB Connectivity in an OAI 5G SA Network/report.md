@@ -225,7 +225,7 @@ Answer the following questions:
 - It is mo-Signalling.
 <img width="1582" height="978" alt="Capture d’écran 2026-09-23 à 10 09 59" src="https://github.com/user-attachments/assets/9e40fb7c-6990-4ae0-a996-5a03f3aa4a94" />
 
-1. What SRB does `RRCSetupRequest` use? Why?
+2. What SRB does `RRCSetupRequest` use? Why?
 - It uses SRB0 because there isn't a designated connection that has been established yet.
 
 3. Which side sends `RRCSetup`?
@@ -328,7 +328,7 @@ Answer:
 Apply:
 
 ```wireshark
-nas-5gs || ngap
+gtp || icmp 
 ```
 
 Find the PDU Session Establishment Accept and record the UE address:
@@ -336,12 +336,6 @@ Find the PDU Session Establishment Accept and record the UE address:
 | Field | Observed value |
 |---|---|
 | UE IPv4 address |  |
-
-Apply:
-
-```wireshark
-gtp || icmp
-```
 
 Find one ICMP Echo Request and its Echo Reply. Confirm that the UE's IP packet is carried inside GTP-U between the gNB and UPF.
 
