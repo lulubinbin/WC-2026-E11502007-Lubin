@@ -238,7 +238,7 @@ Answer the following questions:
 - The message carried inside is a Registration request.
 
 6. At the end of this procedure, is the UE only connected to the gNB, or is it already registered with the 5G Core? Explain.
-- At the end of the procedure, the UE is only connected to the gNB. Network registration is not complete yet. 
+- At the end of the procedure, the UE is only connected to the gNB. Network registration is not complete yet. It is a separate, subsequent process where the 5G core network authenticates the user subscription and officially accepts the device. 
 
 ### Checkpoint 3: RRC Connection Establishment — 35 points
 
