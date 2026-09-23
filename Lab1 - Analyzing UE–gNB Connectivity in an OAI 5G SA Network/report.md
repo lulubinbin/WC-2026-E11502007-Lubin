@@ -195,6 +195,7 @@ Find the following messages in order:
 1. `RRCSetupRequest`
 2. `RRCSetup`
 3. `RRCSetupComplete`
+<img width="1421" height="93" alt="Capture d’écran 2026-09-23 à 09 47 03" src="https://github.com/user-attachments/assets/9062d170-e559-4579-a418-e833511dca75" />
 
 You may also try these specific filters:
 
@@ -214,18 +215,30 @@ Complete the table:
 
 | Message | Direction | Logical channel / SRB | Main purpose | Packet number |
 |---|---|---|---|---:|
-| RRCSetupRequest |  |  |  |  |
-| RRCSetup |  |  |  |  |
-| RRCSetupComplete |  |  |  |  |
+| RRCSetupRequest | UE to gNB | UL-CCCH / SRB0 | Before connection | 104 |
+| RRCSetup | gNB to UE | DL-CCCH / SRB0 | gNB sets up SRB1 | 105 |
+| RRCSetupComplete | UE to gNB | UL-DCCH / SRB1 | After setup | 108 |
 
 Answer the following questions:
 
 1. What is the establishment cause in `RRCSetupRequest`?
-2. What SRB does `RRCSetupRequest` use? Why?
+- It is mo-Signalling.
+<img width="1582" height="978" alt="Capture d’écran 2026-09-23 à 10 09 59" src="https://github.com/user-attachments/assets/9e40fb7c-6990-4ae0-a996-5a03f3aa4a94" />
+
+1. What SRB does `RRCSetupRequest` use? Why?
+- It uses SRB0 because there isn't a designated connection that has been established yet.
+
 3. Which side sends `RRCSetup`?
+- It is the gNodeB. It replies to UE.
+
 4. Which signaling radio bearer is used after the RRC connection is established?
+- SRB1 is used after it is created.
+
 5. Which NAS message is carried inside `RRCSetupComplete`?
+- The message carried inside is a Registration request.
+
 6. At the end of this procedure, is the UE only connected to the gNB, or is it already registered with the 5G Core? Explain.
+- At the end of the procedure, the UE is only connected to the gNB. Network registration is not complete yet. 
 
 ### Checkpoint 3: RRC Connection Establishment — 35 points
 
