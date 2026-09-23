@@ -112,8 +112,13 @@ Analyze → Enabled Protocols
 Submit:
 
 - A screenshot showing that the `OAI-5G` profile is selected. — 3 points
+<img width="720" height="540" alt="Capture d’écran 2026-09-23 à 08 54 16" src="https://github.com/user-attachments/assets/17e20f2d-591a-4209-af83-9163b44d03d7" />
+
 - A screenshot showing the opened capture. — 2 points
+<img width="1582" height="978" alt="Capture d’écran 2026-09-23 à 08 56 34" src="https://github.com/user-attachments/assets/6c9f9be5-b8cf-4e5e-b0dc-fe5c118e187d" />
+
 - A screenshot showing NR RRC packets after applying `nr-rrc`. — 5 points
+<img width="1582" height="978" alt="Capture d’écran 2026-09-23 à 08 55 07" src="https://github.com/user-attachments/assets/e40b30c1-a286-4dfb-8fb6-b4903647ec1e" />
 
 ---
 
