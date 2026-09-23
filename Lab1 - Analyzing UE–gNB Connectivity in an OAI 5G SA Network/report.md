@@ -135,32 +135,35 @@ Apply these filters individually:
 ```wireshark
 ngap
 ```
+<img width="1470" height="199" alt="Capture d’écran 2026-09-23 à 09 03 36" src="https://github.com/user-attachments/assets/df9b85af-a077-4a77-a031-c5693a4fe189" />
 
 ```wireshark
 gtp
 ```
+<img width="1470" height="200" alt="Capture d’écran 2026-09-23 à 09 04 13" src="https://github.com/user-attachments/assets/207eb21d-fc89-48dc-bf34-bf11b5d2f6db" />
 
 ```wireshark
 icmp
 ```
+<img width="1470" height="200" alt="Capture d’écran 2026-09-23 à 09 04 57" src="https://github.com/user-attachments/assets/6d6b2f6c-67bc-411a-905a-a4d4148f5813" />
 
 Complete the table:
 
 | Component | IP address | Evidence from the capture |
 |---|---|---|
-| UE PDU address |  |  |
-| gNB |  |  |
-| AMF |  |  |
-| UPF |  |  |
-| Data Network |  |  |
+| UE PDU address | 10.0.0.2 | <img width="1145" height="59" alt="Capture d’écran 2026-09-23 à 09 34 35" src="https://github.com/user-attachments/assets/47b5e05f-aab0-4533-9c91-5a10489ca272" /> |
+| gNB | 192.168.70.129 | <img width="753" height="61" alt="Capture d’écran 2026-09-23 à 09 12 55" src="https://github.com/user-attachments/assets/c1c1169f-d5ae-437f-8358-e6bd27920b76" /> |
+| AMF | 192.168.70.132 | <img width="753" height="61" alt="Capture d’écran 2026-09-23 à 09 12 55" src="https://github.com/user-attachments/assets/c1c1169f-d5ae-437f-8358-e6bd27920b76" /> |
+| UPF | 192.168.70.134 | <img width="1582" height="978" alt="Capture d’écran 2026-09-23 à 09 22 34" src="https://github.com/user-attachments/assets/4e04ec14-eed5-4d4a-b5ad-54a7e7367af6" /> |
+| Data Network | 192.168.70.135 | <img width="1156" height="114" alt="Capture d’écran 2026-09-23 à 09 36 14" src="https://github.com/user-attachments/assets/bb740d17-95bd-4d27-99a5-0515bff0b34e" /> |
 
 Complete the interface table:
 
 | Interface | Connected components | Main protocol | Purpose |
 |---|---|---|---|
-| N1 |  |  |  |
-| N2 |  |  |  |
-| N3 |  |  |  |
+| N1 | UE <-> AMF (via gNB) | NAS | Registration messages |
+| N2 | gNB <-> AMF | NGAP | gNB–core messages |
+| N3 | gNB <-> UPF | GTP | Tunnel for UE IP packets |
 
 The logical architecture is:
 
