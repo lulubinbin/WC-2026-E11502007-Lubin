@@ -1,5 +1,9 @@
 # Lab 1: Analyzing UE–gNB Connectivity in an OAI 5G SA Network
 
+> [!NOTE]  
+> **Lubin OUISSE** (E11502007)
+
+
 ## 1. Lab Overview
 
 In this lab, you will use Wireshark to analyze how a UE establishes an RRC connection with an OAI gNB and then registers with the 5G Core.
