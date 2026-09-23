@@ -335,15 +335,24 @@ Find the PDU Session Establishment Accept and record the UE address:
 
 | Field | Observed value |
 |---|---|
-| UE IPv4 address |  |
+| UE IPv4 address | 10.0.0.2 |
 
 Find one ICMP Echo Request and its Echo Reply. Confirm that the UE's IP packet is carried inside GTP-U between the gNB and UPF.
 
 Answer:
 
 1. What IPv4 address was assigned to the UE?
+- The IPv4 address assigned is 10.0.0.2
+
 2. How many ICMP Echo Request/Reply pairs are present?
+- There are 10 ICMP Echo Request/Reply. 
+
 3. What does the successful Echo Reply prove about the UE connection?
+- It means that the UE has an active PDU session and a working UE-DN user-plane path. The internet connexion is established.
+
+Example of an ICMP Echo request and its Echo Reply: 
+<img width="1141" height="71" alt="Capture d’écran 2026-09-23 à 17 21 41" src="https://github.com/user-attachments/assets/c2c49739-02ec-4304-bbd9-6737006ded1c" />
+
 
 ### Checkpoint 5: UE IP and User Plane — 15 points
 
