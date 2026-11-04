@@ -18,7 +18,7 @@ I chose this course as it allows me to dive deeper into networks. While I had al
     - Goal:
 In this lab, you will use Wireshark to analyze how a UE establishes an RRC connection with an OAI gNB and then registers with the 5G Core.
     - delivery: [Report](https://github.com/lulubinbin/WC-2026-E11502007-Lubin/blob/main/Lab1%20-%20Analyzing%20UE%E2%80%93gNB%20Connectivity%20in%20an%20OAI%205G%20SA%20Network/report.md)
-    -  [ ] Peer review : [Vote the Top3](https://docs.google.com/forms/d/e/1FAIpQLSeY8uVnBUwJ6l6CwQ6arx3JHthTJupHBeA2WwyD-EUIYqHHrg/viewform?usp=publish-editor) (DL: 23:59, Sep. 30)
+    -  [x] Peer review : [Vote the Top3](https://docs.google.com/forms/d/e/1FAIpQLSeY8uVnBUwJ6l6CwQ6arx3JHthTJupHBeA2WwyD-EUIYqHHrg/viewform?usp=publish-editor) (DL: 23:59, Sep. 30)
       
 
 - **LAB2 : gNB TDD Traffic Analysis
@@ -26,7 +26,7 @@ In this lab, you will use Wireshark to analyze how a UE establishes an RRC conne
     -  **Deadline : 12:00, Oct. 5**
     - Goal:
 In this lab,you will compare three 5-second UDP iperf3 tests. You will learn how TDD slot allocation can affect downlink and uplink performance.
-    - - delivery: **put your file link here**.
+    - - delivery: [Report](https://github.com/lulubinbin/WC-2026-E11502007-Lubin/blob/main/Lab2%20-%20gNB%20TDD%20Traffic%20Analysis/report.md)
     -  [ ] Peer review : [Vote the Top3](https://docs.google.com/forms/d/e/1FAIpQLScz-Kt_9ArkXOl8sG99549xqGK7W7vAqoY4lbbc3ph03zvFaw/viewform?usp=publish-editor) (DL: 23:59, Oct.7)
 
 
