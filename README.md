@@ -17,7 +17,7 @@ I chose this course as it allows me to dive deeper into networks. While I had al
     - **Deadline : 12:00, Sep. 28**
     - Goal:
 In this lab, you will use Wireshark to analyze how a UE establishes an RRC connection with an OAI gNB and then registers with the 5G Core.
-    - delivery: **put your file link here**.
+    - delivery: [Report](https://github.com/lulubinbin/WC-2026-E11502007-Lubin/blob/main/Lab1%20-%20Analyzing%20UE%E2%80%93gNB%20Connectivity%20in%20an%20OAI%205G%20SA%20Network/report.md)
     -  [ ] Peer review : [Vote the Top3](https://docs.google.com/forms/d/e/1FAIpQLSeY8uVnBUwJ6l6CwQ6arx3JHthTJupHBeA2WwyD-EUIYqHHrg/viewform?usp=publish-editor) (DL: 23:59, Sep. 30)
       
 
