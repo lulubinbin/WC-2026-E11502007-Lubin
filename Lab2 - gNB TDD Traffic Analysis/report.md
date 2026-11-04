@@ -382,9 +382,9 @@ Complete the table using the supplied scenario mapping, the SIB1 reference confi
 
 | Scenario | TDD setting | Traffic direction | Is the setting suitable for this direction? Why? |
 | --- | --- | --- | --- |
-| A | DL-heavy | Downlink | |
-| B | DL-heavy | Uplink | |
-| C | Balanced | Uplink | |
+| A | DL-heavy | Downlink | Yes. More DL resources provide more downlink transmission opportunities. A DL-heavy setting is suitable for downlink traffic. |
+| B | DL-heavy | Uplink | No. A DL-heavy setting may limit heavy uplink traffic. |
+| C | Balanced | Uplink | Yes. A balanced setting gives uplink traffic more opportunities than the DL-heavy setting in this lab. |
 
 Use these ideas:
 
@@ -396,7 +396,11 @@ Use these ideas:
 
 > The configuration captures show the reference broadcast TDD settings. The iperf3 JSON reports performance; it does not contain TDD parameters. The scenario captures are used for traffic analysis and need not include SIB1.
 
-**Question:** Why might Scenario C achieve better uplink throughput than Scenario B? Refer to your SIB1 diagrams and measured results.
+**Question:** Why might Scenario C achieve better uplink throughput than Scenario B? Refer to your SIB1 diagrams and measured results.  
+Scenario C achieves better uplink throughput than scenario B because a balanced setting gives uplink traffic more transmission opportunities than the DL-heavy setting. 
+> A COMPLETERSQQQQQQQSQQ
+> AAAAAZAZAZAZAZA
+> AZAZZAZZZAZZAZAAZAZZA
 
 ## 8. Task 6 — Find GTP-U Information
 
@@ -417,13 +421,26 @@ Record the following information from one packet:
 
 | Item | Value |
 | --- | --- |
-| Scenario capture filename | |
-| Packet number | |
-| Outer source IP | |
-| Outer destination IP | |
-| Inner source IP | |
-| Inner destination IP | |
-| TEID | |
+| Scenario capture filename | scenario-a-dl-heavy-downlink.pcapng |
+| Packet number | 1831 |
+| Outer source IP | 192.168.70.129 |
+| Outer destination IP | 192.168.70.134 |
+| Inner source IP | 10.0.0.6 |
+| Inner destination IP | 192.168.70.135 |
+| TEID | 0x00000011 |
+
+<img width="1582" height="979" alt="Capture d’écran 2026-11-04 à 10 53 08" src="https://github.com/user-attachments/assets/91a96119-4b50-44c3-ab71-e1ce119ff8a7" />
+<img width="1582" height="979" alt="Capture d’écran 2026-11-04 à 10 53 04" src="https://github.com/user-attachments/assets/00756214-473a-43e6-b0f4-d4c3967ac29a" />
+
+| Item | Value |
+| --- | --- |
+| Scenario capture filename | scenario-a-dl-heavy-downlink.pcapng |
+| Packet number | 1831 |
+| Outer source IP | 192.168.70.129 |
+| Outer destination IP | 192.168.70.134 |
+| Inner source IP | 10.0.0.6 |
+| Inner destination IP | 192.168.70.135 |
+| TEID | 0x00000011 |
 
 Meaning:
 
