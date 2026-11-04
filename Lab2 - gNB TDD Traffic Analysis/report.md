@@ -231,19 +231,23 @@ Complete the table for `pattern1`:
 
 | Item | DL-heavy: A/B | Balanced: C |
 | --- | --- | --- |
-| Configuration capture filename | | |
-| SIB1 packet number | | |
-| `referenceSubcarrierSpacing` (kHz) | | |
-| `dl-UL-TransmissionPeriodicity` (ms) | | |
-| `nrofDownlinkSlots` | | |
-| `nrofDownlinkSymbols` | | |
-| `nrofUplinkSlots` | | |
-| `nrofUplinkSymbols` | | |
-| Is `pattern2` present? | | |
+| Configuration capture filename | tdd-dl-heavy-sib1.pcapng | tdd-balanced-sib1.pcapng |
+| SIB1 packet number | 2 | 2 |
+| `referenceSubcarrierSpacing` (kHz) | 30 | 30 |
+| `dl-UL-TransmissionPeriodicity` (ms) | 5 | 2.5 |
+| `nrofDownlinkSlots` | 7 | 2 |
+| `nrofDownlinkSymbols` | 6 | 6 |
+| `nrofUplinkSlots` | 2 | 2 |
+| `nrofUplinkSymbols` | 4 | 4 |
+| Is `pattern2` present? | no | no |
 
 If `pattern2` is present, add another table containing its period and four slot/symbol counts. It uses the same reference SCS.
 
-Take **one screenshot per configuration** showing the selected SIB1 packet and the expanded TDD fields. Include `pattern2` in an additional screenshot if it is present and does not fit.
+Take **one screenshot per configuration** showing the selected SIB1 packet and the expanded TDD fields. Include `pattern2` in an additional screenshot if it is present and does not fit.  
+
+<img width="1582" height="979" alt="Capture d’écran 2026-11-04 à 09 53 38" src="https://github.com/user-attachments/assets/e9b23704-6325-4e4a-8c9c-89c05cc6d996" />
+<img width="1582" height="979" alt="Capture d’écran 2026-11-04 à 09 53 24" src="https://github.com/user-attachments/assets/0892dcbf-fafc-48ea-80db-7eff4d36f262" />
+
 
 ### 4.4 Draw the TDD Time Allocation
 
@@ -276,6 +280,13 @@ Use **D = downlink**, **U = uplink**, and **F = flexible**. Include a legend, th
 
 If `pattern2` is present, draw `pattern1` followed by `pattern2`; the combined sequence repeats. Label each pattern boundary and show the full combined duration.
 
+> DIAGRAMMME
+>
+> AAAAA
+> AAAAAA
+>
+> AAAAAA
+
 First, count the symbols over **one complete repeating sequence** for each configuration. The two sequences may have different durations, so their raw UL symbol counts alone cannot be used to compare resources per unit time:
 
 ```text
@@ -289,17 +300,20 @@ For two patterns, sum the counts and durations of both patterns before calculati
 
 | TDD setting | Repeating duration (ms) | Total reference slots | DL symbols | UL symbols | Flexible symbols | Configured UL symbol share (%) |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| DL-heavy | | | | | | |
-| Balanced | | | | | | |
+| DL-heavy | 5 | 10 | 104 | 32 | 4 | 22.9 |
+| Balanced | 2.5 | 5 | 34 | 32 | 4 | 45.7 |
 
 Next, count the symbols over the **same 5 ms interval** shown in your diagrams. Multiply each per-sequence count by the number of complete repetitions in 5 ms. For these captures, 5 ms contains a whole number of repetitions for both configurations.
 
 | TDD setting | Repeating duration (ms) | Repetitions in 5 ms | DL symbols in 5 ms | UL symbols in 5 ms | Flexible symbols in 5 ms |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| DL-heavy | | | | | |
-| Balanced | | | | | |
+| DL-heavy | 5 | 1 | 104 | 32 | 4 |
+| Balanced | 2.5 | 2 | 68 | 64 | 8 |
 
 **Question:** Can two patterns have the same UL symbol count per period but provide different numbers of UL symbols per unit time? Explain using your two tables.
+> REPONDRE
+>
+> AAAFAFZEFGZETHGEHEAH
 
 ### 4.5 Connect SIB1 to the Performance Results
 
