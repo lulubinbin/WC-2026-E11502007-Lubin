@@ -321,16 +321,31 @@ Use the supplied mapping between the reference configuration captures and scenar
 
 | Scenario | Reference TDD setting | JSON traffic direction | Configured UL symbol share (%) | Throughput (Mbps) | Packet loss (%) |
 | --- | --- | --- | ---: | ---: | ---: |
-| A | DL-heavy | | | | |
-| B | DL-heavy | | | | |
-| C | Balanced | | | | |
+| A | DL-heavy | Downlink | 22.9 | 90.65 | 0.442954627080091 |
+| B | DL-heavy | Uplink | 22.9 | 109.12 | 0.23565878306653645 |
+| C | Balanced | Uplink | 45.7 | 124.42 | 2.133919261135111 |
 
 Answer:
 
-1. Which decoded TDD parameters differ between DL-heavy and balanced?
-2. Which configuration provides more configured UL symbols per unit time? Support your answer with the diagram and calculated share.
-3. How does that difference help explain the B/C throughput comparison?
-4. Why can A and B use the same SIB1 TDD configuration even though their traffic directions differ?
+1. Which decoded TDD parameters differ between DL-heavy and balanced?  
+Two parameters differ:
+- **dl-UL-TransmissionPeriodicity**: 5 ms (DL-heavy) vs 2.5 ms (balanced)
+- **nrofDownlinkSlots**: 7 vs 2
+
+2. Which configuration provides more configured UL symbols per unit time? Support your answer with the diagram and calculated share.  
+**Balanced** provides more configured UL symbols per unit time.  
+Both diagrams show the same 32 configured UL symbols per period (2 full UL slots + 4 UL symbols in the mixed slot), but the balanced pattern repeats twice as often:
+- DL-heavy (5 ms period): 32 UL symbols per 5 ms → UL share = 32/140 ≈ 22.9%
+- Balanced (2.5 ms period): 2 repetitions × 32 = 64 UL symbols per 5 ms → UL share = 32/70 ≈ 45.7%
+
+3. How does that difference help explain the B/C throughput comparison?   
+Scenario C gives uplink roughly twice the airtime of B: the configured UL share doubles from 22.9% to 45.7% because the same 32-symbol UL pattern repeats every 2.5 ms instead of every 5 ms. So a UL-limited iperf flow in C should show about double B's throughput, while DL throughput is better with B (104 vs 68 DL symbols). 
+
+4. Why can A and B use the same SIB1 TDD configuration even though their traffic directions differ?  
+> REPONDRE
+> !!!!!!!!!!!
+> !!!!!!!!!!!
+> !!!!!!!!!!
 
 > More configured UL resources can provide more opportunities for uplink traffic, but they do not guarantee a proportional throughput increase. Scheduling, radio conditions, overhead, offered traffic, and other radio settings also affect the result. This comparison does not establish that the TDD pattern is the only cause of a performance difference. SIB1 does not show actual slot-by-slot data scheduling. Because the configuration captures were recorded separately, use them as references for the supplied settings, not as independent proof of what was broadcast during each original performance run.
 
