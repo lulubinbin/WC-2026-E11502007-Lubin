@@ -255,6 +255,51 @@ Draw one diagram for DL-heavy and one for balanced. **Use the same 0–5 ms time
 
 A spreadsheet, a drawing tool, or a hand-drawn diagram is acceptable. Include the diagrams as images in your report.
 
+#### DL-Heavy 
+
+```mermaid
+gantt
+    title DL-Heavy TDD Time Allocation (5 ms Period)
+    dateFormat mm:ss.SSS
+    axisFormat %S.%L ms
+
+    section DL-Heavy (5 ms)
+    Slot 0 (D)               :active, d0, 00:00.000, 00:00.500
+    Slot 1 (D)               :active, d1, 00:00.500, 00:01.000
+    Slot 2 (D)               :active, d2, 00:01.000, 00:01.500
+    Slot 3 (D)               :active, d3, 00:01.500, 00:02.000
+    Slot 4 (D)               :active, d4, 00:02.000, 00:02.500
+    Slot 5 (D)               :active, d5, 00:02.500, 00:03.000
+    Slot 6 (D)               :active, d6, 00:03.000, 00:03.500
+    Slot 7 (Mixed 6D 4F 4U)  :crit, m7, 00:03.500, 00:04.000
+    Slot 8 (U)               :done, u8, 00:04.000, 00:04.500
+    Slot 9 (U)               :done, u9, 00:04.500, 00:05.000
+```
+
+#### Balanced 
+
+```mermaid
+gantt
+    title Balanced TDD Time Allocation (2.5 ms Period - 2 Repetitions in 5 ms)
+    dateFormat mm:ss.SSS
+    axisFormat %S.%L ms
+
+    section Period 1 (0.0 - 2.5 ms)
+    Slot 0 (D)               :active, d0, 00:00.000, 00:00.500
+    Slot 1 (D)               :active, d1, 00:00.500, 00:01.000
+    Slot 2 (Mixed 6D 4F 4U)  :crit, m2, 00:01.000, 00:01.500
+    Slot 3 (U)               :done, u3, 00:01.500, 00:02.000
+    Slot 4 (U)               :done, u4, 00:02.000, 00:02.500
+
+    section Period 2 (2.5 - 5.0 ms)
+    Slot 5 (D)               :active, d5, 00:02.500, 00:03.000
+    Slot 6 (D)               :active, d6, 00:03.000, 00:03.500
+    Slot 7 (Mixed 6D 4F 4U)  :crit, m7, 00:03.500, 00:04.000
+    Slot 8 (U)               :done, u8, 00:04.000, 00:04.500
+    Slot 9 (U)               :done, u9, 00:04.500, 00:05.000
+
+```
+
 For the normal cyclic prefix used in this exercise, each reference slot contains **14 OFDM symbols**, numbered **0–13**. Use the SIB1 **reference SCS** to construct the common pattern:
 
 | Reference SCS | Reference slot duration |
@@ -280,13 +325,6 @@ Use **D = downlink**, **U = uplink**, and **F = flexible**. Include a legend, th
 
 If `pattern2` is present, draw `pattern1` followed by `pattern2`; the combined sequence repeats. Label each pattern boundary and show the full combined duration.
 
-> DIAGRAMMME
->
-> AAAAA
-> AAAAAA
->
-> AAAAAA
-
 First, count the symbols over **one complete repeating sequence** for each configuration. The two sequences may have different durations, so their raw UL symbol counts alone cannot be used to compare resources per unit time:
 
 ```text
@@ -310,10 +348,9 @@ Next, count the symbols over the **same 5 ms interval** shown in your diagrams. 
 | DL-heavy | 5 | 1 | 104 | 32 | 4 |
 | Balanced | 2.5 | 2 | 68 | 64 | 8 |
 
-**Question:** Can two patterns have the same UL symbol count per period but provide different numbers of UL symbols per unit time? Explain using your two tables.
-> REPONDRE
->
-> AAAFAFZEFGZETHGEHEAH
+**Question:** Can two patterns have the same UL symbol count per period but provide different numbers of UL symbols per unit time? Explain using your two tables.  
+Yes. Table 1 shows both patterns configure 32 UL symbols per sequence (2×14+4), since `nrofUplinkSlots` and `nrofUplinkSymbols` are identical. But the periodicity differs: DL-heavy repeats every 5 ms, balanced every 2.5 ms.   
+Table 2 shows the result over the common 5 ms: 32 vs 64 UL symbols. Balanced delivers twice as many UL symbols per unit time.  
 
 ### 4.5 Connect SIB1 to the Performance Results
 
@@ -342,10 +379,7 @@ Both diagrams show the same 32 configured UL symbols per period (2 full UL slots
 Scenario C gives uplink roughly twice the airtime of B: the configured UL share doubles from 22.9% to 45.7% because the same 32-symbol UL pattern repeats every 2.5 ms instead of every 5 ms. So a UL-limited iperf flow in C should show about double B's throughput, while DL throughput is better with B (104 vs 68 DL symbols). 
 
 4. Why can A and B use the same SIB1 TDD configuration even though their traffic directions differ?  
-> REPONDRE
-> !!!!!!!!!!!
-> !!!!!!!!!!!
-> !!!!!!!!!!
+SIB1 broadcasts the cell's common TDD frame allocation structure, defining available radio time resources rather than controlling actual user-plane traffic flows. Scenario A and Scenario B use the exact same cell-wide DL-heavy radio channel configuration, but test different application layer traffic directions (Scenario A generates Downlink data from server to UE, while Scenario B generates Uplink data from UE to server).
 
 > More configured UL resources can provide more opportunities for uplink traffic, but they do not guarantee a proportional throughput increase. Scheduling, radio conditions, overhead, offered traffic, and other radio settings also affect the result. This comparison does not establish that the TDD pattern is the only cause of a performance difference. SIB1 does not show actual slot-by-slot data scheduling. Because the configuration captures were recorded separately, use them as references for the supplied settings, not as independent proof of what was broadcast during each original performance run.
 
@@ -398,9 +432,7 @@ Use these ideas:
 
 **Question:** Why might Scenario C achieve better uplink throughput than Scenario B? Refer to your SIB1 diagrams and measured results.  
 Scenario C achieves better uplink throughput than scenario B because a balanced setting gives uplink traffic more transmission opportunities than the DL-heavy setting. 
-> A COMPLETERSQQQQQQQSQQ
-> AAAAAZAZAZAZAZA
-> AZAZZAZZZAZZAZAAZAZZA
+As shown in the SIB1 diagrams: Scenario B (DL-heavy) has a longer 5 ms pattern with only 2 full Uplink slots, giving 32 Uplink symbols every 5 ms (22.86% share). Scenario C (Balanced) has a shorter 2.5 ms pattern that repeats 2 times in 5 ms, giving 64 Uplink symbols every 5 ms (45.71% share).
 
 ## 8. Task 6 — Find GTP-U Information
 
