@@ -143,13 +143,13 @@ Complete the table:
 
 Answer:
 
-1. Does C have higher uplink throughput than B?
+1. Does C have higher uplink throughput than B?  
 It is higher in C (124.42 Mbps > 109.12 Mbps). 
 
-2. Does C have lower packet loss than B?
+2. Does C have lower packet loss than B?  
 No, C has higher packet loss than B (2.13% > 0.24%). Its packet loss rate is almost 10 times higher. 
 
-3. What trade-off, if any, is visible when changing from B to C?
+3. What trade-off, if any, is visible when changing from B to C?  
 We can see two trade-offs here: higher packet loss but also a slightly higher jitter (0.16 ms > 0.12 ms). 
 
 A simple answer format is:
@@ -375,7 +375,7 @@ Both diagrams show the same 32 configured UL symbols per period (2 full UL slots
 - DL-heavy (5 ms period): 32 UL symbols per 5 ms → UL share = 32/140 ≈ 22.9%
 - Balanced (2.5 ms period): 2 repetitions × 32 = 64 UL symbols per 5 ms → UL share = 32/70 ≈ 45.7%
 
-3. How does that difference help explain the B/C throughput comparison?   
+3. How does that difference help explain the B/C throughput comparison?  
 Scenario C gives uplink roughly twice the airtime of B: the configured UL share doubles from 22.9% to 45.7% because the same 32-symbol UL pattern repeats every 2.5 ms instead of every 5 ms. So a UL-limited iperf flow in C should show about double B's throughput, while DL throughput is better with B (104 vs 68 DL symbols). 
 
 4. Why can A and B use the same SIB1 TDD configuration even though their traffic directions differ?  
@@ -588,25 +588,25 @@ Answer each question in two or three sentences:
 1. Does Scenario A use a TDD setting that matches its traffic direction?  
 Yes it does. It uses a TDD DL-Heavy setting for a downlink transmission. 
 
-2. Why is Scenario B expected to have limited uplink resources? Cite a parameter or count from the DL-heavy SIB1 reference configuration.
+2. Why is Scenario B expected to have limited uplink resources? Cite a parameter or count from the DL-heavy SIB1 reference configuration.  
 Scenario B has limited uplink space because its DL-heavy setting gives only 2 full uplink slots (nrofUplinkSlots: 2). This leaves only 32 uplink symbols every 5 ms, giving the UE very few chances to upload data.
 
-3. How much does uplink throughput change from B to C?
+3. How much does uplink throughput change from B to C?  
 Uplink throughput increases by 14.02 % when using the C configuration over B. 
 
-4. What negative result, if any, is visible in C? Support your answer with packet loss or jitter values.
+4. What negative result, if any, is visible in C? Support your answer with packet loss or jitter values.  
 Two negative results arise: an increase in packet loss (2.13% vs 0.24%) and in jitter (0.16 ms vs 0.12 ms).
 
-5. Why can increasing UL resources improve uplink throughput?
+5. Why can increasing UL resources improve uplink throughput?  
 Giving more uplink resources gives the UE more time slots to send data. The UE waits less in line, so it can upload more data per second.
 
-6. Is adding more UL resources always the best solution? Explain using throughput and packet loss.
+6. Is adding more UL resources always the best solution? Explain using throughput and packet loss.  
 It isn't always the best solution as jitter increased and we also see an almost 10x increase in packet loss rates. 
 
-7. Suggest one simple follow-up test that could improve throughput without producing too much packet loss.
+7. Suggest one simple follow-up test that could improve throughput without producing too much packet loss.  
 We could test different iperf3 sending rates to find the safest one regarding packet loss of scenario C. 
 
-8. What can the configuration captures tell you that the iperf3 JSON cannot? Why are separately recorded configuration captures not direct proof of the configuration during an earlier test?
+8. What can the configuration captures tell you that the iperf3 JSON cannot? Why are separately recorded configuration captures not direct proof of the configuration during an earlier test?  
 Configuration captures show actual 3GPP SIB1 parameters like subcarrier spacing and slot patterns, which are not in iperf3 JSON files. They are not direct proof because they were recorded in a separate test run, so settings could have changed in between.
 
 ## 12. Submission Checklist
