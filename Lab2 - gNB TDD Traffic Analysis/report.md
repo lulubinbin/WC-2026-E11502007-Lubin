@@ -517,13 +517,25 @@ Record the number of displayed packets:
 
 | Scenario | Displayed TCP retransmissions |
 | --- | ---: |
-| A | |
-| B | |
-| C | |
+| A | 14 |
+| B | 12 |
+| C | 12 |
+
+The number of displayed packets is at the bottom of the screenshots. 
+
+#### scenario-a-dl-heavy-downlink.pcapng
+<img width="1582" height="979" alt="image" src="https://github.com/user-attachments/assets/3389ee62-38f9-4115-91d7-aef3789c41d0" />
+
+#### scenario-b-dl-heavy-uplink.pcapng
+<img width="1582" height="979" alt="image" src="https://github.com/user-attachments/assets/06cc958f-9914-42df-b186-2e88fc132fc9" />
+
+#### scenario-c-balanced-uplink.pcapng
+<img width="1582" height="979" alt="image" src="https://github.com/user-attachments/assets/981c2a59-6556-443a-b8a1-9d38c7ed4870" />
 
 > Report the number displayed by Wireshark using the specified filter. Counts may vary with Wireshark analysis settings. Include screenshots showing the filter and displayed count for each scenario. The filter includes any TCP flows that Wireshark can decode in the capture; a displayed retransmission is not, by itself, proof of loss in the UDP test.
 
-**Question:** Do these TCP retransmissions directly represent lost UDP performance packets?
+**Question:** Do these TCP retransmissions directly represent lost UDP performance packets?  
+They do not directly represent lost UDP performance packets. UDP doesn't retransmit lost packets, and it is used for the main test data. The retransmissions caught by the filter come from the separate TCP control connection that iperf3 uses to start. This is not proof of lost UDP data packets.
 
 ## 10. Task 8 — RTT and Packet Interval
 
@@ -541,7 +553,9 @@ Select one packet from the iperf3 TCP control connection and record its ACK RTT:
 
 | Scenario | Packet number | Example TCP ACK RTT |
 | --- | ---: | --- |
-| A, B, or C | | |
+| A | 1833 | 485.000 microseconds |
+
+<img width="1582" height="979" alt="Capture d’écran 2026-11-04 à 17 24 38" src="https://github.com/user-attachments/assets/02b24862-9431-4566-84f8-669b494fbcfe" />
 
 This value is the RTT of the TCP control connection. It is not the RTT of the UDP data packets.
 
@@ -561,7 +575,9 @@ Record the scenario, display filter, packet numbers, and time interval.
 
 | Scenario | Display filter | Packet numbers | Time interval |
 | --- | --- | --- | --- |
-| | | | |
+| scenario-a-dl-heavy-downlink.pcapng | tcp.analysis.ack_rtt && udp | 1833 - 1842 | 18.162000 ms|
+
+<img width="1582" height="979" alt="image" src="https://github.com/user-attachments/assets/ffcae6d0-6920-4ca0-979a-1f4c7363f660" />
 
 **Note:** The time interval depends on the applied display filter. Make sure the selected packets are distinct data packets, not duplicated observations from different capture points. Do not use their interval to infer the TDD slot pattern.
 
@@ -569,14 +585,29 @@ Record the scenario, display filter, packet numbers, and time interval.
 
 Answer each question in two or three sentences:
 
-1. Does Scenario A use a TDD setting that matches its traffic direction?
+1. Does Scenario A use a TDD setting that matches its traffic direction?  
+Yes it does. It uses a TDD DL-Heavy setting for a downlink transmission. 
+
 2. Why is Scenario B expected to have limited uplink resources? Cite a parameter or count from the DL-heavy SIB1 reference configuration.
+Scenario B has limited uplink space because its DL-heavy setting gives only 2 full uplink slots (nrofUplinkSlots: 2). This leaves only 32 uplink symbols every 5 ms, giving the UE very few chances to upload data.
+
 3. How much does uplink throughput change from B to C?
+Uplink throughput increases by 14.02 % when using the C configuration over B. 
+
 4. What negative result, if any, is visible in C? Support your answer with packet loss or jitter values.
+Two negative results arise: an increase in packet loss (2.13% vs 0.24%) and in jitter (0.16 ms vs 0.12 ms).
+
 5. Why can increasing UL resources improve uplink throughput?
+Giving more uplink resources gives the UE more time slots to send data. The UE waits less in line, so it can upload more data per second.
+
 6. Is adding more UL resources always the best solution? Explain using throughput and packet loss.
+It isn't always the best solution as jitter increased and we also see an almost 10x increase in packet loss rates. 
+
 7. Suggest one simple follow-up test that could improve throughput without producing too much packet loss.
+We could test different iperf3 sending rates to find the safest one regarding packet loss of scenario C. 
+
 8. What can the configuration captures tell you that the iperf3 JSON cannot? Why are separately recorded configuration captures not direct proof of the configuration during an earlier test?
+Configuration captures show actual 3GPP SIB1 parameters like subcarrier spacing and slot patterns, which are not in iperf3 JSON files. They are not direct proof because they were recorded in a separate test run, so settings could have changed in between.
 
 ## 12. Submission Checklist
 
