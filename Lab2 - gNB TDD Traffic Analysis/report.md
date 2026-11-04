@@ -63,7 +63,7 @@ Complete the table:
 | B | 0 | uplink |
 | C | 0 | uplink |
 
-**Question:** Does the traffic direction shown in the JSON match the scenario description? Show the proof.
+**Question:** Does the traffic direction shown in the JSON match the scenario description? Show the proof.  
 The traffic direction shown in the JSON files match the scenario description from part 2 of this template. 
 
 <img width="531" height="719" alt="Capture d’écran 2026-11-04 à 08 57 51" src="https://github.com/user-attachments/assets/206600da-d87a-49eb-8379-65f7d9b824aa" />
@@ -89,9 +89,13 @@ Complete the table:
 
 | Scenario | Direction | Throughput (Mbps) |
 | --- | --- | ---: |
-| A | Downlink | |
-| B | Uplink | |
-| C | Uplink | |
+| A | Downlink | 90.65 |
+| B | Uplink | 109.12 |
+| C | Uplink | 124.42 |
+
+<img width="450" height="273" alt="Capture d’écran 2026-11-04 à 09 05 33" src="https://github.com/user-attachments/assets/ec5725ab-6d0c-411f-809a-84f9d0954b12" />
+<img width="475" height="290" alt="Capture d’écran 2026-11-04 à 09 06 02" src="https://github.com/user-attachments/assets/e0c517fc-858f-4f3d-868d-2023673356c6" />
+<img width="470" height="277" alt="Capture d’écran 2026-11-04 à 09 06 23" src="https://github.com/user-attachments/assets/490e396a-036d-4a35-897f-e41b543c9ac7" />
 
 Calculate how much C improves over B:
 
@@ -99,12 +103,25 @@ Calculate how much C improves over B:
 Improvement (%) = (C - B) ÷ B × 100
 ```
 
-Answer:
+Answer: 
+```text
+(124.41674913023271 - 109.11724969037457) / 109.11724969037457  
+= 15.2994994399 / 109.11724969037457
+= 0.1402115567
+≈ 14.02 %
+```
 
 1. What is the downlink throughput in Scenario A?
-2. What is the uplink throughput in Scenario B?
-3. Is the uplink throughput higher in B or C?
-4. By approximately what percentage does C improve over B?
+It is 90.65 Mbps. 
+
+2. What is the uplink throughput in Scenario B?  
+It is 109.12 Mbps. 
+
+3. Is the uplink throughput higher in B or C?  
+It is higher in C (124.42 > 109.12). 
+
+4. By approximately what percentage does C improve over B?  
+C improves over B by approximately 14.02%. 
 
 > Use the JSON `bits_per_second` value. Do not recalculate throughput using the other time fields.
 
