@@ -111,7 +111,7 @@ Answer:
 ≈ 14.02 %
 ```
 
-1. What is the downlink throughput in Scenario A?
+1. What is the downlink throughput in Scenario A?  
 It is 90.65 Mbps. 
 
 2. What is the uplink throughput in Scenario B?  
@@ -138,18 +138,23 @@ Complete the table:
 
 | Scenario | Throughput (Mbps) | Packet loss (%) | Jitter (ms) |
 | --- | ---: | ---: | ---: |
-| B | | | |
-| C | | | |
+| B | 109.11724969037457 | 0.23565878306653645 | 0.11619665995310689 |
+| C | 124.41674913023271 | 2.133919261135111 | 0.16204804777679407 |
 
 Answer:
 
 1. Does C have higher uplink throughput than B?
+It is higher in C (124.42 Mbps > 109.12 Mbps). 
+
 2. Does C have lower packet loss than B?
+No, C has higher packet loss than B (2.13% > 0.24%). Its packet loss rate is almost 10 times higher. 
+
 3. What trade-off, if any, is visible when changing from B to C?
+We can see two trade-offs here: higher packet loss but also a slightly higher jitter (0.16 ms > 0.12 ms). 
 
 A simple answer format is:
 
-> Compared with Scenario B, Scenario C has ______ throughput, ______ packet loss, and ______ jitter. These results suggest ______.
+> Compared with Scenario B, Scenario C has **higher** throughput, **higher** packet loss, and **higher** jitter. These results suggest that DL-heavy Uplink (B) is worse than Balanced Uplink (C) on those metrics because there is less uplink scheduling opportunities.
 
 Use the measured values. If one result improves while another worsens, explain that trade-off. Do not assume that increasing UL resources always increases packet loss.
 
