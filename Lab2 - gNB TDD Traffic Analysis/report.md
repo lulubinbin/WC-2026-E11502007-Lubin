@@ -466,13 +466,30 @@ Record the following information from one packet:
 
 | Item | Value |
 | --- | --- |
-| Scenario capture filename | scenario-a-dl-heavy-downlink.pcapng |
-| Packet number | 1831 |
+| Scenario capture filename | scenario-b-dl-heavy-uplink.pcapng |
+| Packet number | 2065 |
 | Outer source IP | 192.168.70.129 |
 | Outer destination IP | 192.168.70.134 |
 | Inner source IP | 10.0.0.6 |
 | Inner destination IP | 192.168.70.135 |
-| TEID | 0x00000011 |
+| TEID | 0x00000012 |
+
+<img width="1582" height="979" alt="Capture d’écran 2026-11-04 à 10 53 44" src="https://github.com/user-attachments/assets/7a584770-2e6c-47fd-81c8-94ebcec93695" />
+<img width="1582" height="979" alt="Capture d’écran 2026-11-04 à 10 53 39" src="https://github.com/user-attachments/assets/292514c6-3c31-493f-a9ef-ac3f3876451d" />
+
+| Item | Value |
+| --- | --- |
+| Scenario capture filename | scenario-c-balanced-uplink.pcapng |
+| Packet number | 1430 |
+| Outer source IP | 192.168.70.129 |
+| Outer destination IP | 192.168.70.134 |
+| Inner source IP | 10.0.0.6 |
+| Inner destination IP | 192.168.70.135 |
+| TEID | 0x00000013 |
+
+<img width="1582" height="979" alt="Capture d’écran 2026-11-04 à 10 54 30" src="https://github.com/user-attachments/assets/a1ca9f35-4036-4951-8add-76f3f3c8ede5" />
+<img width="1582" height="979" alt="Capture d’écran 2026-11-04 à 10 54 23" src="https://github.com/user-attachments/assets/eb00c862-d4aa-41b6-8a43-7538dc1a41fd" />
+
 
 Meaning:
 
