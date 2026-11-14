@@ -55,15 +55,19 @@ Observe their terminal outputs and locate evidence of the following stages.
 
 | Stage | Successful? | Evidence from logs |
 |---|---|---|
-| CN5G initialization | Yes | T1: All containers appear to be running (`up`)|
-| gNB NG Setup | Yes | T2: `[NGAP] Send NGSetupRequest  |
-| UE synchronization | Yes| |
-| RRC connection establishment | Yes | |
-| UE Registration | Yes | |
-| PDU Session Establishment | Yes | |
-| UE tunnel creation | Yes | |
+| CN5G initialization | Yes | T1: All containers appear to be running (`up`) |
+| gNB NG Setup | Yes | T2: `[NGAP] Send NGSetupRequest to AMF` followed by `[NGAP] Received NGSetupResponse from AMF` |
+| UE synchronization | Yes| T3: `[PHY] Initial sync successful, PCI: 0` |
+| RRC connection establishment | Yes | T3: Random Access Msg1–Msg4 exchange `[MAC] [UE 0] Send PRACH`, `Received RAR`, followed by `[RRC] [UE 0] State = NR_RRC_CONNECTED` |
+| UE Registration | Yes | T3: `[NAS] [UE 0] Received Registration Accept` and `Registration Complete` | 
+| PDU Session Establishment | Yes | T3: `[NAS] Received PDU Session Establishment Accept`|
+| UE tunnel creation | Yes | T3: `Interface oaitun_ue1 successfully configured, ip address ...` |
 
 Take screenshots showing the gNB and UE successfully connected.
+
+### T1 - Docker
+### T2 - gNB
+### T3 - UE
 
 **Questions:**
 
