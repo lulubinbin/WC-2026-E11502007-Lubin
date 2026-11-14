@@ -66,8 +66,13 @@ Observe their terminal outputs and locate evidence of the following stages.
 Take screenshots showing the gNB and UE successfully connected.
 
 ### T1 - Docker
+<img width="1000" height="564" alt="image" src="https://github.com/user-attachments/assets/e6450fb9-adfa-478f-a164-6c48c0423d90" />
+
 ### T2 - gNB
+<img width="1000" height="564" alt="image" src="https://github.com/user-attachments/assets/d86bb68a-03b9-4792-b24b-083642de680e" />
+
 ### T3 - UE
+<img width="1000" height="564" alt="image" src="https://github.com/user-attachments/assets/55434f7c-737e-4e67-8804-f598e071add6" />
 
 **Questions:**
 
