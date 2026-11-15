@@ -156,22 +156,29 @@ Record:
 
 | Measurement | Observed Value |
 |---|---|
-| UE IP address | |
-| Destination IP | |
-| Packets transmitted | |
-| Packets received | |
-| Packet loss (%) | |
-| Minimum RTT (ms) | |
-| Average RTT (ms) | |
-| Maximum RTT (ms) | |
+| UE IP address | 10.0.0.2/24 (on interface `oaitun_ue1`) |
+| Destination IP | 192.168.70.135 |
+| Packets transmitted | 10 |
+| Packets received | 10 |
+| Packet loss (%) | 0% |
+| Minimum RTT (ms) | 15.030 |
+| Average RTT (ms) | 28.113 |
+| Maximum RTT (ms) | 35.363 |
 
 Take a screenshot of the Ping result.
 
+![Screenshot](https://github.com/lulubinbin/WC-2026-E11502007-Lubin/blob/main/Lab3%20-%20Deploying%20a%205G%20Standalone%20Network%20Using%20OpenAirInterface/screenshots/t3_1.png)
+
 **Questions:**
 
-1. Why must Ping use the `oaitun_ue1` interface in this experiment?
-2. Does successful Registration guarantee successful user-plane connectivity?
-3. What does a successful Ping prove, and what does it not prove about the simulated 5G system?
+1. Why must Ping use the `oaitun_ue1` interface in this experiment?  
+The UE's traffic must leave through the tunnel interface that the PDU Session created, because `oaitun_ue1` carries the UE's assigned address (10.0.0.2) and is the only path routed into the 5G core network. The host's default interface (for example its Wi-Fi or Ethernet card) has a different IP address that is not registered with the 5G core, so packets sent from it would never traverse the gNB, the AMF/UPF path, or the N3 tunnel. Forcing the interface with `-I oaitun_ue1` guarantees the ICMP packets actually cross the simulated 5G user plane.  
+
+2. Does successful Registration guarantee successful user-plane connectivity?  
+No. Registration only proves that the control plane works: the UE authenticated with the network and the AMF accepted it. User-plane connectivity additionally requires a PDU Session to be established, the UPF to allocate a UE IP address, and the GTP-U tunnel between the gNB and the UPF to be correctly configured. A UE can be fully registered yet have no data path if the PDU Session setup fails or the UPF/tunnel configuration is wrong, which is why the Ping test in this task is a separate verification step.  
+
+3. What does a successful Ping prove, and what does it not prove about the simulated 5G system?  
+A successful Ping proves that the full end-to-end user plane works: ICMP packets travel from the UE through the gNB, the GTP-U tunnel, the UPF, and out to the external Data Network, and replies come back, with 0% loss in our measurement. It does not prove that the system behaves like a real 5G deployment: there is no actual radio channel, no RF impairments, no cell-edge conditions, and the RTT (about 28 ms on average) reflects software processing and scheduling on a single machine rather than true over-the-air 5G latency. It also says nothing about realistic throughput, mobility, or behavior under load.  
 
 ## 6. Task 4 — Investigate the Effect of Packet Size
 
