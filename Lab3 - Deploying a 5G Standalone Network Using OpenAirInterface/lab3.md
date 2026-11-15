@@ -292,14 +292,16 @@ Complete the table:
 
 | Item | Observation |
 |---|---|
-| Modified parameter | |
-| UE synchronized with gNB? | |
-| RRC connection established? | |
-| Registration successful? | |
-| Error or rejection evidence | |
-| Likely cause | |
+| Modified parameter | `--uicc0.imsi` (changed from `001010000000001` to `001010000000099`) |
+| UE synchronized with gNB? | Yes |
+| RRC connection established? | Yes |
+| Registration successful? | No |
+| Error or rejection evidence | In the `oai-amf` UEs' Information table, Index 2 (`IMSI/SUPI: 001010000000099`) shows a `5GMM State` of `5GMM-DEREGISTERED` with no assigned `GUTI`, while `RAN UE NGAP ID` (`0x01`) and `AMF UE NGAP ID` (`0x02`) were allocated. |
+| Likely cause | The IMSI `001010000000099` is not provisioned in the 5G Core subscriber database (UDM/AUSF), causing authentication/registration to fail. |
 
 If the expected registration rejection does not appear, report the actual logs instead of inventing a failure message.
+
+![Screenshot 1](https://github.com/lulubinbin/WC-2026-E11502007-Lubin/blob/main/Lab3%20-%20Deploying%20a%205G%20Standalone%20Network%20Using%20OpenAirInterface/screenshots/t5_1.png)
 
 ### Step 3 — Restore the Original IMSI
 
@@ -311,15 +313,25 @@ Restart the nrUE using:
 
 Confirm that the UE successfully registers again and that Ping works.
 
+![Screenshot 2](https://github.com/lulubinbin/WC-2026-E11502007-Lubin/blob/main/Lab3%20-%20Deploying%20a%205G%20Standalone%20Network%20Using%20OpenAirInterface/screenshots/t5_2.png)
+
+![Screenshot 3](https://github.com/lulubinbin/WC-2026-E11502007-Lubin/blob/main/Lab3%20-%20Deploying%20a%205G%20Standalone%20Network%20Using%20OpenAirInterface/screenshots/t5_3.png)
+
 **Questions:**
 
-1. Why can the UE potentially synchronize with the gNB even when the IMSI is incorrect?
-2. Which network function is involved in UE authentication?
-3. Why does changing an IMSI affect Registration but not the RFsimulator TCP connection itself?
-4. What evidence proves that restoring the correct configuration solved the problem?
+1. Why can the UE potentially synchronize with the gNB even when the IMSI is incorrect?  
+The UE synchronizes with the gNB at the physical and medium access control (PHY/MAC) layers by detecting synchronization signals and primary/secondary synchronization signals (PSS/SSS) and reading system information blocks (SIB1), which are broadcasted by the gNB for all cells independently of subscriber identity.  
 
-Submit evidence from both the failed and recovered connections.
+2. Which network function is involved in UE authentication?  
+The Authentication Server Function (AUSF) working together with the Unified Data Management (UDM) is responsible for processing authentication credentials and verifying the UE identity during registration.  
 
+3. Why does changing an IMSI affect Registration but not the RFsimulator TCP connection itself?  
+The RFsimulator TCP connection operates purely at the transport layer to exchange physical-layer IQ samples between the gNB and nrUE binaries, whereas the IMSI is part of higher-layer 5G Non-Access Stratum (NAS) identity and security negotiations processed inside the core network after the radio link is established.  
+
+4. What evidence proves that restoring the correct configuration solved the problem?  
+Restoring the correct IMSI allowed the UE to transition its 5GMM State to 5GMM-REGISTERED with an assigned GUTI in the AMF logs, and successfully re-established end-to-end IP data transmission with zero packet loss during ping tests.  
+
+Submit evidence from both the failed and recovered connections. (ABOVE)
 
 ## 8. Task 7 — Explain the Relationship Between Simulation and Real 5G
 
