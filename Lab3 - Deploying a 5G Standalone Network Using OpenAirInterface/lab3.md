@@ -210,9 +210,9 @@ Complete the table:
 
 | Scenario | ICMP Payload | Avg. RTT (ms) | Max. RTT (ms) | Packet Loss (%) |
 |---|---:|---:|---:|---:|
-| A | 56 bytes | | | |
-| B | 512 bytes | | | |
-| C | 1200 bytes | | | |
+| A | 56 bytes | 27.791 | 40.528 | 0% |
+| B | 512 bytes | 30.229 | 43.836 | 0% |
+| C | 1200 bytes | 31.455 | 43.190 | 0% |
 
 Calculate the RTT difference:
 
@@ -220,15 +220,37 @@ Calculate the RTT difference:
 RTT Difference = Average RTT(C) - Average RTT(A)
 ```
 
+- `RRT Difference = 31.455 -  27.791 = 3.664 ms`
+
 **Questions:**
 
-1. Which scenario has the highest average RTT?
-2. Does increasing packet size always increase RTT in your measurements?
-3. Why might a larger packet require more transmission or processing resources?
-4. What factors other than packet size could affect RTT in a software-based 5G network?
-5. Can these results be interpreted as real over-the-air 5G latency? Explain.
+1. Which scenario has the highest average RTT?  
+Scenario C (1200 bytes payload) has the highest average RTT at 31.455 ms.  
+
+2. Does increasing packet size always increase RTT in your measurements?  
+Yes, in these measurements, the average RTT steadily increased as the packet payload size increased (from 27.791 ms for 56 bytes, to 30.229 ms for 512 bytes, up to 31.455 ms for 1200 bytes). However, maximum RTT values can occasionally fluctuate due to local software scheduling and CPU load (e.g., Scenario B's max RTT of 43.836 ms was slightly higher than Scenario C's 43.190 ms).  
+
+3. Why might a larger packet require more transmission or processing resources?  
+Larger packets require more bytes to be serialized, processed through the protocol stacks (IP, UDP/GTP-U, RLC, MAC, PHY), and segmented or buffered across radio resource blocks, increasing transmission time over the simulated air interface.  
+
+4. What factors other than packet size could affect RTT in a software-based 5G network?  
+Factors include host CPU scheduling jitter, background OS process load, TCP socket buffer performance of the RFsimulator, and the internal timer granularities of the virtual interfaces.  
+
+5. Can these results be interpreted as real over-the-air 5G latency? Explain.  
+No, because the RFsimulator runs locally over a software TCP loopback interface (`127.0.0.1`) rather than propagating through physical radio channels, propagation delay, real RF noise, and hardware transceiver impairments.  
 
 Do not assume that RTT must increase with packet size. Use your measured values to support your explanation.
+
+### Screenshots
+
+- Scenario A
+![A](https://github.com/lulubinbin/WC-2026-E11502007-Lubin/blob/main/Lab3%20-%20Deploying%20a%205G%20Standalone%20Network%20Using%20OpenAirInterface/screenshots/t4a.png)
+
+- Scenario B
+![B](https://github.com/lulubinbin/WC-2026-E11502007-Lubin/blob/main/Lab3%20-%20Deploying%20a%205G%20Standalone%20Network%20Using%20OpenAirInterface/screenshots/t4b.png)
+
+- Scenario C
+![C](https://github.com/lulubinbin/WC-2026-E11502007-Lubin/blob/main/Lab3%20-%20Deploying%20a%205G%20Standalone%20Network%20Using%20OpenAirInterface/screenshots/t4c.png)
 
 ## 7. Task 5 — Diagnose a Controlled UE Registration Failure
 
