@@ -76,14 +76,14 @@ Take screenshots showing the gNB and UE successfully connected.
 
 **Questions:**
 
-1. Does a successful NG Setup guarantee that a UE can register? Explain.
-No. A successful NG Setup only confirms that the control-plane connection (N2/NGAP) between the gNB and the AMF is established and that basic cell parameters (like PLMN ID and TAC) match. 
+1. Does a successful NG Setup guarantee that a UE can register? Explain.  
+No. A successful NG Setup only confirms that the control-plane connection (N2/NGAP) between the gNB and the AMF is established and that basic cell parameters (like PLMN ID and TAC) match.   
 
-2. Why can the UE establish an RRC connection but still fail Registration?
-An RRC connection only establishes a local radio link between the UE and the gNB (Access Stratum) without verifying who the subscriber is. Once connected, the UE sends a NAS Registration Request through the gNB to the AMF. Registration can then be rejected at the core network level (Non-Access Stratum) if the IMSI is missing from the subscriber database, the security keys fail 5G-AKA authentication, or the requested network slice (S-NSSAI) or tracking area is not allowed.
+2. Why can the UE establish an RRC connection but still fail Registration?  
+An RRC connection only establishes a local radio link between the UE and the gNB (Access Stratum) without verifying who the subscriber is. Once connected, the UE sends a NAS Registration Request through the gNB to the AMF. Registration can then be rejected at the core network level (Non-Access Stratum) if the IMSI is missing from the subscriber database, the security keys fail 5G-AKA authentication, or the requested network slice (S-NSSAI) or tracking area is not allowed.  
 
-3. What additional procedure is required after Registration before user data can be exchanged?
-Following Registration, the UE must initiate **PDU Session Establishment**. This creates the end-to-end user-plane data path (establishing the Data Radio Bearers over the RAN and the N3 GTP-U tunnel between the gNB and UPF), assigns an IP address to the UE, and brings up the `oaitun_ue1` virtual network interface so IP packets can reach the External Data Network.
+3. What additional procedure is required after Registration before user data can be exchanged?  
+Following Registration, the UE must initiate **PDU Session Establishment**. This creates the end-to-end user-plane data path (establishing the Data Radio Bearers over the RAN and the N3 GTP-U tunnel between the gNB and UPF), assigns an IP address to the UE, and brings up the `oaitun_ue1` virtual network interface so IP packets can reach the External Data Network.  
 
 ## 4. Task 2 — Investigate RFsimulator Communication
 
@@ -116,20 +116,27 @@ Complete the table:
 
 | Item | Observed Value |
 |---|---|
-| gNB process ID | |
-| nrUE process ID | |
-| RFsimulator transport protocol | |
-| RFsimulator port | |
-| TCP connection state | |
-| Connected process(es) | |
+| gNB process ID | 28365 (a second nr-softmodem process, 28366, also appears; the one owning the TCP socket is 28365) |
+| nrUE process ID | 29309 (a second nr-uesoftmodem process, 29310, also appears; the one owning the TCP socket is 29309) |
+| RFsimulator transport protocol | TCP |
+| RFsimulator port | 4043 |
+| TCP connection state | ESTAB (established); the gNB also has the port in LISTEN state |
+| Connected process(es) | nr-uesoftmodem (pid 29309) at 127.0.0.1:48298 → nr-softmodem (pid 28365) at 127.0.0.1:4043 |
 
 Take one screenshot showing the TCP connection.
 
+![Screenshot](https://github.com/lulubinbin/WC-2026-E11502007-Lubin/blob/main/Lab3%20-%20Deploying%20a%205G%20Standalone%20Network%20Using%20OpenAirInterface/screenshots/t2_1.png)
+
 **Questions:**
 
-1. Why does RFsimulator use a TCP connection instead of a physical antenna?
-2. Are the TCP packets exchanged by RFsimulator the same as the UE's application-layer IP packets?
-3. Does using RFsimulator mean that the UE and gNB are performing no physical-layer processing? Explain.
+1. Why does RFsimulator use a TCP connection instead of a physical antenna?  
+Because there is no RF hardware in this experiment, the samples that would normally travel over the air must still be exchanged between the gNB and the UE. The RFsimulator replaces the radio channel with a TCP connection over the loopback interface (127.0.0.1, port 4043): the gNB listens on the port and the UE connects to it as a client. TCP is used because it is reliable and ordered, so the IQ samples arrive in the same sequence they were generated, which keeps the receiver's synchronization and decoding working as if a real channel existed.  
+
+2. Are the TCP packets exchanged by RFsimulator the same as the UE's application-layer IP packets?  
+No. The TCP packets carry digitized IQ samples (the raw OFDM waveforms), not user data. The UE's application-layer IP packets (for example the ICMP packets from Ping) are generated after full 5G protocol processing and are carried inside the PDU Session through the `oaitun_ue1` tunnel interface. The two data paths are completely separate: the TCP connection on port 4043 emulates the radio channel, while the user-plane IP traffic flows through the 5G core network.  
+
+3. Does using RFsimulator mean that the UE and gNB are performing no physical-layer processing? Explain.  
+No, the opposite is true. Both the gNB and the UE run the complete 5G NR physical layer in software: they generate and process OFDM symbols, perform modulation, coding, synchronization, channel estimation and decoding on the exchanged samples. What RFsimulator removes is only the analog part: real antennas, RF front-ends, and wireless propagation effects. That is why the processes we observed (`nr-softmodem`, pid 28365, and `nr-uesoftmodem`, pid 29309) consume significant CPU even though no radio hardware is present.  
 
 ## 5. Task 3 — Verify End-to-End Connectivity
 
