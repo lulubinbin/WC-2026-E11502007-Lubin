@@ -1,5 +1,8 @@
 # Lab 3: Deploying a 5G Standalone Network Using OpenAirInterface
 
+> [!NOTE]
+> I used Abel's computer for the environment as it was impossible to install the correct one on my own computer but the work is my own. 
+
 ## 1. Goal
 
 In the previous labs, you analyzed 5G signaling messages and network performance using provided captures and measurements.
@@ -341,19 +344,27 @@ Complete the comparison:
 
 | Feature | OAI RFsimulator | Physical 5G System |
 |---|---|---|
-| gNB and UE protocol stack | | |
-| OFDM signal processing | | |
-| Physical antennas | | |
-| RF hardware impairments | | |
-| Wireless propagation effects | | |
-| 5G Core connectivity | | |
+| gNB and UE protocol stack | Fully functional software implementation of 5G NR layers (PHY, MAC, RLC, PDCP, RRC, SDAP) | Fully functional implementation running on dedicated hardware and firmware |
+| OFDM signal processing | Calculated in software via baseband signal generation and processing functions | Processed in real-time by digital signal processors (DSPs) and FPGA/ASIC hardware |
+| Physical antennas | None (replaced by socket-based virtual communication) | Required at both gNB and UE for spatial transmission and reception |
+| RF hardware impairments | Absent or completely idealized (no phase noise, power amplifier non-linearity, or thermal noise) | Present (includes amplifier distortion, phase noise, IQ imbalance, and thermal noise) |
+| Wireless propagation effects | Idealized or simulated via basic software channel models (no real multipath fading, shadowing, or external interference) | Subject to real-world multipath fading, path loss, Doppler shift, shadowing, and interference |
+| 5G Core connectivity | Fully connected via virtual network interfaces and containerized network functions | Connected via physical transport networks (F1/NG interfaces over Ethernet/fiber) |
 
 **Questions:**
 
-1. Which parts of the 5G system remain functional when physical RF hardware is replaced with RFsimulator?
-2. Why is RFsimulator useful for testing the 5G protocol stack?
-3. Why might latency and throughput differ between RFsimulator and a real 5G deployment?
-4. What would need to change if you wanted to test a physical UE instead of OAI nrUE?
+1. Which parts of the 5G system remain functional when physical RF hardware is replaced with RFsimulator?  
+The entire 5G Core Network (AMF, SMF, UPF, AUSF, UDM, NRF) and the complete 5G NR protocol stack of both the gNB and nrUE—including SDAP, PDCP, RLC, MAC, RRC, NAS, and baseband OFDM digital signal processing—remain fully functional.  
+
+2. Why is RFsimulator useful for testing the 5G protocol stack?  
+RFsimulator eliminates the high cost, hardware complexity, and RF interference issues of physical SDR transceivers and antennas, allowing developers and students to verify end-to-end 5G signaling, protocol state transitions, core network integration, and user-plane data flow on a single standard machine.  
+
+3. Why might latency and throughput differ between RFsimulator and a real 5G deployment?  
+Latency and throughput differ because RFsimulator runs in software over a local TCP loopback socket, making performance heavily dependent on host CPU speed, OS thread scheduling jitter, and socket buffer overhead, rather than dedicated real-time FPGA/ASIC hardware and physical over-the-air radio propagation delays, noise, and channel fading.  
+
+4. What would need to change if you wanted to test a physical UE instead of OAI nrUE?  
+You would need to replace the RFsimulator software interface with physical SDR hardware (such as a USRP) connected to antennas at the gNB, configure real RF parameters (transmit/receive gain, physical frequency bands, and hardware clock synchronization), and provision a physical programmable SIM card with matching IMSI, Ki, and OPc credentials into the physical UE.  
+
 
 ## 9. Final Analysis
 
@@ -364,6 +375,23 @@ Answer each question in three to five sentences.
 3. Based on your measurements, how did packet size affect RTT and packet loss?
 4. Describe the registration failure you introduced and explain how you diagnosed and recovered from it.
 5. Identify two limitations of this simulated environment and explain how they might affect experimental results.
+
+Questions:
+
+1. Describe the complete process from starting the OAI 5GC to successful user-plane connectivity.  
+First, the OAI 5G Core Network is initialized using Docker Compose (`docker compose up -d`), spinning up containerized network functions such as the AMF, SMF, UPF, and UDM. Next, the gNB (`nr-softmodem`) is started, establishing NGAP connectivity and performing an NG Setup procedure with the AMF. Following that, the user equipment emulator (`nr-uesoftmodem`) is launched, which synchronizes with the gNB via RFsimulator, completes RRC connection establishment, performs NAS UE Registration and authentication, and triggers PDU Session Establishment. Finally, the virtual network interface (`oaitun_ue1`) is created on the host, allowing end-to-end user-plane IP traffic to flow successfully between the UE and the external data network.  
+
+2. Explain the difference between an RFsimulator TCP connection and a 5G PDU Session.  
+An RFsimulator TCP connection operates at the transport layer over loopback to exchange raw baseband IQ samples between the gNB and nrUE software binaries, replacing physical radio waves. In contrast, a 5G PDU Session is a logical end-to-end connection established at the core network layer between the UE and the User Plane Function (UPF), providing IP connectivity and encapsulation for actual user data packets.  
+
+3. Based on your measurements, how did packet size affect RTT and packet loss?  
+Based on the ping experiments, increasing the ICMP payload size from 56 bytes to 512 bytes and 1200 bytes resulted in a steady increase in average RTT (rising from 27.791 ms to 30.229 ms and 31.455 ms, respectively), as larger payloads require more transmission and serialization resources. However, packet loss remained consistently at 0% across all scenarios, indicating stable transport performance over the simulated link.  
+
+4. Describe the registration failure you introduced and explain how you diagnosed and recovered from it.  
+The registration failure was introduced by modifying the UE configuration to use an invalid, unprovisioned IMSI (`001010000000099`). Although the UE still synchronized with the gNB and established an RRC connection, the AMF logs showed that registration failed, leaving the UE in a `5GMM-DEREGISTERED` state because the core network could not authenticate the unknown subscriber. Diagnosis was performed by inspecting the AMF user status table via container logs, and recovery was achieved by restoring the original valid IMSI (`001010000000001`), which immediately allowed the UE to register successfully and resume ping traffic.  
+
+5. Identify two limitations of this simulated environment and explain how they might affect experimental results.  
+First, the use of RFsimulator over a local TCP loopback interface completely eliminates real-world radio propagation effects such as path loss, multipath fading, Doppler shift, and atmospheric noise, which would normally cause fluctuations and packet loss in a real deployment. Second, because all network functions, RAN components, and UEs run as software processes on a single host machine, host CPU scheduling jitter and resource contention directly impact latency measurements, meaning experimental RTT values do not reflect true over-the-air 5G timing.  
 
 ## 10. Submission Checklist
 
