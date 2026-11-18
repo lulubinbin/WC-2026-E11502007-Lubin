@@ -100,6 +100,8 @@ grep -nE \
 
 **Record:** The CU and DU F1 addresses, the DU SSB frequency, and PRB count. If the local settings differ from the table above, adapt the following commands and capture filters accordingly.
 
+<img width="959" height="478" alt="709932250-9d7340c2-295a-49f8-a977-b99729069b25" src="https://github.com/user-attachments/assets/8738853a-993d-4066-a5bd-5fcb881a3515" />
+
 **Questions**
 
 1. Which protocol layers mainly reside in the CU, and which reside in the DU?  
@@ -112,7 +114,7 @@ grep -nE \
 > - MAC 
 > - PHY
   
-1. What is the purpose of the F1 interface?  
+2. What is the purpose of the F1 interface?  
 > It's the interface between the CU and the DU. It is split into two interfaces: the F1-C (control pane) and the F1-U (user pane)
 
 3. Why must the UE radio frequency be compatible with the DU rather than taken blindly from the previous lab?
@@ -131,6 +133,8 @@ cd ~/oai-cn5g
 docker compose up -d
 docker compose ps
 ```
+<img width="959" height="273" alt="709946328-59819d17-e23f-4263-9673-69e934b3e665" src="https://github.com/user-attachments/assets/382167f1-5edc-4880-b180-96803aeaa186" />
+<img width="959" height="340" alt="709946736-2d193d0f-40a2-4649-a178-057144c6cda6" src="https://github.com/user-attachments/assets/15ab2802-c921-45ca-9771-a9fc46a6240d" />
 
 ### Terminal 2 — Start gNB-CU
 
@@ -140,6 +144,8 @@ cd ~/openairinterface5g-v2.4.0/cmake_targets/ran_build/build
 sudo ./nr-softmodem \
   -O ../../../targets/PROJECTS/GENERIC-NR-5GC/CONF/gnb-cu.sa.f1.conf
 ```
+<img width="956" height="433" alt="1" src="https://github.com/user-attachments/assets/9605aad3-8ddf-463d-a602-e94865f30985" />
+<img width="952" height="475" alt="2" src="https://github.com/user-attachments/assets/e3b613f2-950a-4e16-afa0-534f0769e915" />
 
 ### Terminal 3 — Start gNB-DU
 
@@ -152,6 +158,7 @@ sudo ./nr-softmodem \
   -O ../../../targets/PROJECTS/GENERIC-NR-5GC/CONF/gnb-du.sa.band78.106prb.rfsim.pci0.conf \
   --rfsim
 ```
+<img width="955" height="462" alt="3" src="https://github.com/user-attachments/assets/7af2ec6b-72a9-44be-9859-522a4b85b93d" />
 
 ### Terminal 4 — Start nrUE
 
@@ -167,6 +174,7 @@ sudo ./nr-uesoftmodem \
   --rfsim \
   --rfsimulator.serveraddr 127.0.0.1
 ```
+<img width="959" height="476" alt="4" src="https://github.com/user-attachments/assets/8c49991c-75dd-4cda-80b9-550595f04f49" />
 
 > **Instructor note:** This UE command reflects the working classroom split configuration. In particular, the original Lab 3 `-C 3619200000` setting was not compatible with this DU configuration. If a provided classroom image has different NR frequencies or UICC credentials, use the instructor-validated values.
 
@@ -176,6 +184,7 @@ sudo ./nr-uesoftmodem \
 ip -4 addr show oaitun_ue1
 ping -I oaitun_ue1 -c 10 192.168.70.135
 ```
+<img width="950" height="351" alt="ping" src="https://github.com/user-attachments/assets/445ef516-4887-4ba5-8264-e2263f0cab31" />
 
 **Evidence:** Screenshots of CU/DU startup, UE connection, and successful Ping. Record the observed UE IP, transmitted/received packets, packet loss, and average RTT. Do **not** invent values; they vary by machine.
 
@@ -194,6 +203,7 @@ sudo tcpdump -i lo -s 0 -nn \
   -w ~/lab4-f1-complete.pcap \
   'host 127.0.0.3 and host 127.0.0.4 and (sctp or udp port 2152)'
 ```
+<img width="671" height="106" alt="packet" src="https://github.com/user-attachments/assets/a2541a3f-6a9a-492a-bad2-b3ce82d6eb45" />
 
 This captures:
 
@@ -209,9 +219,12 @@ This captures:
 ```bash
 ping -I oaitun_ue1 -c 30 -i 0.2 192.168.70.135
 ```
+<img width="776" height="473" alt="Capture d’écran 2026-11-18 à 10 21 20" src="https://github.com/user-attachments/assets/5db8baea-f43f-475e-94e4-fe687d41c763" />
 
 4. Press `Ctrl+C` in the **tcpdump terminal** to finish and save the PCAP.
 5. Verify the file:
+
+<img width="694" height="236" alt="Capture d’écran 2026-11-18 à 10 21 56" src="https://github.com/user-attachments/assets/0e2d0a88-3564-4a4f-9175-9b282ce7f3d5" />
 
 ```bash
 ls -lh ~/lab4-f1-complete.pcap
@@ -265,12 +278,29 @@ Find and record these messages:
 **Questions**
 
 1. Which node initiates F1 Setup, and which acknowledges it?
+
+> The gNB-DU initiates the F1 Setup procedure by sending an F1 Setup Request containing information about its cells to the gNB-CU. The gNB-CU responds with an F1 Setup Response to confirm and accept the connection.
+
 2. Explain the difference between SCTP association establishment and F1 Setup.
+
+> SCTP association establishment takes place first at the transport layer and creates a reliable communication link between the DU and CU. Once this connection is established, the F1 Setup procedure takes place at the application layer using F1AP to exchange cell configuration information and establish the logical F1 interface.
+
 3. How can a NAS Registration Request be transported over F1-C?
+
+> Since the DU does not process NAS or RRC messages, the UE includes its NAS Registration Request within an RRC Setup Complete message. The DU encapsulates this message in an F1AP UL RRC Message Transfer message and forwards it to the CU through the F1-C interface. The CU then sends the NAS request toward the 5G Core.
+
 4. What is the role of UE Context Setup?
+
+> The UE Context Setup procedure is used by the CU to instruct the DU to allocate and configure the necessary radio resources for a specific UE. It prepares the required radio bearers and data tunnels, allowing the DU to handle the UE's communication and manage its traffic.
+
 5. Does F1 Setup alone prove successful UE Registration? Explain.
 
+> No, completing F1 Setup does not mean that a UE has successfully registered with the network. This procedure only confirms that the gNB-CU and gNB-DU have established communication and exchanged the required cell configuration information. UE registration is a separate process that involves connecting a device, performing authentication with the 5G Core, and potentially establishing a data session.
+
 **Evidence:** Screenshot with F1 Setup Request/Response and screenshot with at least three UE-associated F1AP messages. Include packet numbers and source/destination addresses.
+
+<img width="1582" height="977" alt="Capture d’écran 2026-11-18 à 09 48 31" src="https://github.com/user-attachments/assets/6cf3aeeb-091d-46cd-a4e5-1bf32f6fa2f6" />
+
 
 ---
 
@@ -281,6 +311,7 @@ In the **same PCAP**, apply:
 ```text
 gtp
 ```
+ <img width="1582" height="977" alt="Capture d’écran 2026-11-18 à 10 04 13" src="https://github.com/user-attachments/assets/7b1fbde1-7d74-4c50-834f-b8ad1d18707a" />
 
 If necessary, first check:
 
@@ -320,12 +351,28 @@ Identify the interface using the actual source/destination endpoints and configu
 **Questions**
 
 1. Which transport protocol carries F1-U?
-2. What does a GTP-U **TEID** identify?
+
+> F1-U uses UDP (User Datagram Protocol) as its transport protocol. It carries GTP-U user-plane traffic, typically through UDP port 2152.
+
+2. What does a GTP-U TEID identify?
+
+> The TEID (Tunnel Endpoint Identifier) is used to distinguish a particular GTP-U tunnel. It allows the receiving node, either the CU or DU, to determine which UE and data bearer the incoming packet is associated with.
+
 3. Which direction is `127.0.0.4 → 127.0.0.3` in this setup?
+
+> This represents the uplink (UL) direction. In this configuration, `127.0.0.4` corresponds to the gNB-DU, while `127.0.0.3` represents the gNB-CU. Therefore, the traffic flows from the DU toward the CU.
+
 4. How would you distinguish F1-U from N3 in a packet capture?
+
+> Both F1-U and N3 use GTP-U over UDP port 2152, so the main way to identify them is by examining their source and destination IP addresses. F1-U traffic is exchanged between the gNB-DU (`127.0.0.4`) and gNB-CU (`127.0.0.3`), while N3 traffic flows between the gNB-CU and the 5G Core UPF.
+
 5. Why do F1-C and F1-U use different transport protocols?
 
+> F1-C and F1-U use different protocols because they serve different purposes. F1-C handles important control messages, such as RRC signaling and UE configuration, so it uses SCTP to provide reliable and ordered message delivery. In contrast, F1-U carries user data, where low latency and fast transmission are more important. For this reason, it uses UDP, which avoids the delays associated with transport-layer retransmissions.
+
 **Evidence:** Screenshot of at least one GTP-U T-PDU, with outer IP addresses, UDP ports, message type, and TEID visible. Record the observed UL and DL packet counts (if both directions are present). Do not assume equal counts.
+
+<img width="1582" height="977" alt="Capture d’écran 2026-11-18 à 10 08 21" src="https://github.com/user-attachments/assets/bb40554e-155f-4a26-b373-1bc33aa2e89c" />
 
 ---
 
@@ -335,15 +382,16 @@ Complete the table:
 
 | Feature | Lab 3: Monolithic gNB | Lab 4: CU/DU Split |
 |---|---|---|
-| Number of RAN processes | | |
-| Location of RRC/PDCP | | |
-| Location of RLC/MAC/PHY | | |
-| F1-C interface present? | | |
-| F1-U interface present? | | |
-| UE connected to the same 5GC? | | |
-| End-to-end Ping works? | | |
+| Number of RAN processes | 1 (single monolithic `nr-softmodem` process) | 2 (one `nr-softmodem` for gNB-CU + one `nr-softmodem` for gNB-DU) |
+| Location of RRC/PDCP | Monolithic gNB | gNB-CU (Central Unit) |
+| Location of RLC/MAC/PHY | Monolithic gNB | gNB-DU (Distributed Unit) |
+| F1-C interface present? | No | Yes (F1AP over SCTP between CU and DU) |
+| F1-U interface present? | No | Yes (GTP-U over UDP between CU and DU) |
+| UE connected to the same 5GC? | Yes (OAI CN5G) | Yes (OAI CN5G) |
+| End-to-end Ping works? | Yes | Yes |
 
-Explain in **3–5 sentences** why splitting a gNB changes the internal RAN interfaces but does not change the UE's need for synchronization, registration and a PDU session.
+Explain in **3–5 sentences** why splitting a gNB changes the internal RAN interfaces but does not change the UE's need for synchronization, registration and a PDU session.  
+> Splitting a gNB into a CU and DU changes the internal architecture of the base station by introducing the F1-C and F1-U interfaces for communication between the two units. However, from the UE's perspective, they still operate as a single 5G base station. The UE must still synchronize with the radio signal through the DU, register with the 5G Core through the CU, and establish a PDU session to access data services. Therefore, the split only affects the internal network structure and does not change the normal connection procedures required by the UE.
 
 ---
 
@@ -368,16 +416,16 @@ Explain in **3–5 sentences** why splitting a gNB changes the internal RAN inte
 
 Submit **one Markdown or PDF report** and **one PCAP file** containing:
 
-- [ ] CU/DU configuration summary and frequency check.
-- [ ] CU/DU and nrUE running evidence.
-- [ ] UE tunnel IP and successful Ping result (loss and RTT).
-- [ ] One PCAP containing **F1-C and F1-U**.
-- [ ] F1 Setup Request/Response screenshot.
-- [ ] Three or more UE-related F1AP messages with explanation.
-- [ ] At least one GTP-U T-PDU screenshot with TEID and endpoints.
-- [ ] Explanation distinguishing F1-C, F1-U and N3.
-- [ ] Completed monolithic-vs-split comparison table.
-- [ ] Answers to all analysis questions.
+- [x] CU/DU configuration summary and frequency check.
+- [x] CU/DU and nrUE running evidence.
+- [x] UE tunnel IP and successful Ping result (loss and RTT).
+- [x] One PCAP containing **F1-C and F1-U**.
+- [x] F1 Setup Request/Response screenshot.
+- [x] Three or more UE-related F1AP messages with explanation.
+- [x] At least one GTP-U T-PDU screenshot with TEID and endpoints.
+- [x] Explanation distinguishing F1-C, F1-U and N3.
+- [x] Completed monolithic-vs-split comparison table.
+- [x] Answers to all analysis questions.
 
 All screenshots, packet numbers, TEIDs and measurements must come from **your own experiment**.
 
