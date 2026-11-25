@@ -77,6 +77,11 @@ grep -nE 'Starting cell search|Initial sync successful' lab5-artifacts/Lab5-ue.l
 
 Record whether UE synchronization succeeded and the PCI value. Explain: after completing initial synchronization, what is the UE able to do?
 
+<img width="998" height="61" alt="image" src="https://github.com/user-attachments/assets/4718e0d1-0b8b-453b-b520-9cee04fa3e17" />
+
+> UE sync succeeded and the PCI value is 0.  
+> After completing the initial sync, the UE is able to decode the PBCH, which carries the MIB.
+
 #### Step 2: Find MIB and SIB1 — 8 points
 
 In Wireshark, enter:
@@ -87,7 +92,13 @@ nr-rrc
 
 Find one `MIB` packet and one `SIB1` packet. Record the frame number of each and provide screenshots.
 
+<img width="718" height="74" alt="image" src="https://github.com/user-attachments/assets/26dd5f0d-fed6-4f59-810b-8b9c1d0dd4d2" />
+
+> In the image, we see that packet 2 is a `MIB` packet and that packet 3 is an `SIB1` packet. 
+
 MIB and SIB1 are repeatedly broadcast system-information messages. The UE must obtain the common configuration before it can continue the access procedure. Briefly explain the purpose of MIB and SIB1 for UE access.
+
+> It is the MIB → SIB1 chain which enables the UE to monitor PDCCH and perform the random access procedure to establish an RRC connection. MIB tells the UE where to look. SIB1 tells the UE how to access the cell.
 
 #### Step 3: Find Msg1 PRACH — 8 points
 
@@ -100,8 +111,8 @@ grep -nE 'PRACH' lab5-artifacts/Lab5-ue.log
 Record the Msg1 log line number. From the line that shows the actual PRACH transmission, find:
 
 ```text
-frame.slot = ______
-preambleIndex = ______
+frame.slot = 553.19
+preambleIndex = 16
 ```
 
 Next, return to Wireshark. Clear the display filter, press `Cmd/Ctrl + F`, choose **Packet details** as the search scope, and search for:
@@ -113,12 +124,19 @@ RACH Preamble chosen
 After locating the PRACH event recorded by the gNB tracer, record:
 
 ```text
-RAPID = ______
+RAPID = 16
 ```
 
 This packet is displayed as `MAC-LTE RACH Preamble chosen`; it is the OAI tracer MAC-event format.
 
 Submit one UE-log screenshot and one Wireshark screenshot. Briefly answer:
+
+##### UE-log
+<img width="1451" height="96" alt="image" src="https://github.com/user-attachments/assets/6d07e00f-6289-43b3-a0c7-abfa32273568" />
+
+##### Wireshark
+<img width="1582" height="977" alt="image" src="https://github.com/user-attachments/assets/4dfedffc-dda5-49c1-86aa-ce680f144813" />
+
 
 1. Which Random Access message is this PRACH transmission?
 2. At which `frame.slot` and with which `preambleIndex` does the UE log show transmission?
