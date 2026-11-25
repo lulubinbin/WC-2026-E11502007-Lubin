@@ -139,16 +139,25 @@ Submit one UE-log screenshot and one Wireshark screenshot. Briefly answer:
 
 
 1. Which Random Access message is this PRACH transmission?
+> It is **Msg1** of the 4-step random access procedure. The UE sends a preamble on a PRACH occasion to request access; at this point no UE-specific uplink grant exists yet, so Msg1 is a contention-based request sent on configured resources from SIB1's RACH configuration.
+
 2. At which `frame.slot` and with which `preambleIndex` does the UE log show transmission?
+> From the following line in `lab5-ue.log`:  
+> 81:[PHY]    PRACH [UE 0] in frame.slot 553.19, placing PRACH in position 2828, Msg1/MsgA-Preamble frequency start 0 (k1 0), preamble_offset 3, first_nonzero_root_idx 0, preambleIndex = 16  
+> We see that `frame.slot = 553.19` and `preambleIndex = 16`. 
+
 3. Does the Wireshark `RAPID` match the UE-log `preambleIndex`? What does this show?
+> `RAPID` does match `preambleIndex`. This shows that the preamble the UE reports transmitting on frame.slot 553.19 is the same preamble the gNB detected and associated with its response. It is a cross-check between two independent views of the same Msg1. 
 
 #### Step 4: Find Msg2 RAR in Wireshark — 11 points
 
 Return to Wireshark and clear the display filter. Press `Cmd/Ctrl + F`, choose **Packet details** as the search scope, and search for `RAR` or `Random Access Response`. After locating the packet, record its frame number and find the following values in `MAC-NR RAR`:
 
+<img width="1582" height="977" alt="image" src="https://github.com/user-attachments/assets/2eddf144-79d8-4df2-a626-7eafb297c98c" />
+
 ```text
-RAPID = ______
-Temporary C-RNTI = ______
+RAPID = 16
+Temporary C-RNTI = 61982
 ```
 
 ### Task 2: Complete Random Access and RRC Connection Setup — 40 points
