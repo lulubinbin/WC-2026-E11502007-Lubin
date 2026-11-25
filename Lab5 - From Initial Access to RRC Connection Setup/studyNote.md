@@ -282,6 +282,45 @@ Using the log and Wireshark evidence found in Tasks 1 and 2, draw your own Messa
 
 Determine and draw the correct order and direction of the messages yourself. Add a one-sentence purpose next to each arrow.
 
+```mermaid
+sequenceDiagram
+    autonumber
+    actor UE as User Equipment
+    participant BS as gNB (Base Station)
+
+    rect rgb(235, 245, 255)
+        Note over UE,BS: Initial Cell Acquisition
+
+        BS-->>UE: Broadcast System Information (MIB + SIB1)
+        Note right of UE: UE reads cell configuration and random access parameters.
+    end
+
+    rect rgb(240, 255, 240)
+        Note over UE,BS: Random Access Procedure (RACH)
+
+        UE->>BS: PRACH Preamble (Index 16)
+        Note left of UE: Initial access request from RRC_IDLE.
+
+        BS-->>UE: Random Access Response (RAPID 16)
+        Note right of BS: Temporary identity assigned: TC-RNTI = 61982 + UL Grant.
+
+        UE->>BS: RRCSetupRequest
+        Note left of UE: Request transmitted using temporary RNTI 61982.
+
+        BS-->>UE: Contention Resolution + RRCSetup (ID = 1)
+        Note right of BS: UE identity is resolved and SRB1 configuration is provided.
+    end
+
+    rect rgb(255, 245, 235)
+        Note over UE,BS: RRC Connection Established
+
+        UE->>BS: RRCSetupComplete (ID = 1)
+        Note right of UE: Setup confirmation sent using RNTI 61982.
+
+        Note over UE,BS: UE transitions from RRC_IDLE to RRC_CONNECTED.
+    end
+```
+
 | Item | Points |
 |---|---:|
 | UE and gNB lifelines, with the two UE states identified | 5 |
